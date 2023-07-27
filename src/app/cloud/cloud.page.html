@@ -1,0 +1,24 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/main/tabs/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Cloud File</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <input type="file" (change)="onFileChange($event)" accept=".jpg, .jpeg, .png, .gif, .pdf, .doc, .docx, .xls, .xlsx, .ppt, .pptx">
+  <ion-button (click)="onUpload()">Upload</ion-button>
+  <ion-progress-bar [value]="progress"></ion-progress-bar>
+
+    <!-- Display the list of files received from the server -->
+  <ion-list *ngIf="fileList.length > 0">
+    <ion-item *ngFor="let file of fileList">
+      <ion-label>{{ file.name }}</ion-label>
+      <ion-text>{{ formatFileSize(file.size) }}</ion-text>
+      <!-- Add more properties as needed -->
+    </ion-item>
+  </ion-list>
+
+</ion-content>

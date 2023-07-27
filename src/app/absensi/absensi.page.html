@@ -1,0 +1,102 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/main/tabs/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Presensi</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="false">
+  <ion-item>
+    <ion-select
+      [(ngModel)]="selectedOption"
+      (ionChange)="loadData()"
+      label="Pilih Kelas"
+      placeholder="Kelas"
+    >
+      <ion-select-option value="x tkj 1">X TKJ 1</ion-select-option>
+      <ion-select-option value="x tkj 2">X TKJ 2</ion-select-option>
+      <ion-select-option value="x tkj 3">X TKJ 3</ion-select-option>
+      <ion-select-option value="x akl">X AKL</ion-select-option>
+      <ion-select-option value="x tbsm">X TBSM</ion-select-option>
+      <ion-select-option value="x aphp">X APHP</ion-select-option>
+      <ion-select-option value="x tkj 1">XI TKJ 1</ion-select-option>
+      <ion-select-option value="x tkj 2">XI TKJ 2</ion-select-option>
+      <ion-select-option value="x tkj 3">XI TKJ 3</ion-select-option>
+      <ion-select-option value="x akl">XI AKL</ion-select-option>
+      <ion-select-option value="x tbsm">XI TBSM</ion-select-option>
+      <ion-select-option value="x aphp">XI APHP</ion-select-option>
+      <ion-select-option value="x tkj 1">XII TKJ 1</ion-select-option>
+      <ion-select-option value="x tkj 2">XII TKJ 2</ion-select-option>
+      <ion-select-option value="x tkj 3">XII TKJ 3</ion-select-option>
+      <ion-select-option value="x akl">XII AKL</ion-select-option>
+      <ion-select-option value="x tbsm">XII TBSM</ion-select-option>
+      <ion-select-option value="x aphp">XII APHP</ion-select-option>
+      <!-- Tambahkan opsi lain sesuai kebutuhan -->
+    </ion-select>
+  </ion-item>
+  <ion-toolbar>
+    <ion-buttons slot="primary">
+      <ion-label slot="start">{{myDate|date: 'EEEE, d MMMM y'}}</ion-label>
+      <ion-button fill="outline" (click)="goRekap()">
+        <ion-icon slot="start" name="document"></ion-icon>
+        Rekap
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+  <ion-item *ngIf="dataLoaded">
+   <div class="table-container">
+    <table *ngIf="dataSiswa.data">
+      <thead>
+        <tr>
+          <th style="width: 15%;">No</th>
+          <th style="width: 65%;">Nama</th>
+          <th style="width: 20%;">Presensi</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of dataSiswa.data; let i=index">
+          <td>{{i + 1}}</td>
+          <td>{{ item.nama }}</td>
+          <td>
+            <ion-radio-group [(ngModel)]="item.kehadiran" name="item.id">
+              <ion-radio value="hadir" labelPlacement="end" justify="start" color="success">H</ion-radio>
+              <ion-radio value="sakit" labelPlacement="end" justify="start" color="warning">S</ion-radio>
+              <ion-radio value="ijin" labelPlacement="end" justify="start" color="warning">I</ion-radio>
+              <ion-radio value="alpha" labelPlacement="end" justify="start" color="danger">A</ion-radio>
+              <ion-radio value="terlambat" labelPlacement="end" justify="start" color="secondary">T</ion-radio>
+            </ion-radio-group>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="7">
+           <ion-label>Perhatian: Jangan lupa klik tombol kirim setelah mengisi presensi</ion-label>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+   </div>
+  </ion-item>
+  <ion-item *ngIf="!dataLoaded && this.selectedOption">
+    <ion-button (click)="showTable()">
+      <ion-icon slot="start" name="add"></ion-icon>
+      Input Presensi
+    </ion-button>
+  </ion-item>
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed" *ngIf="dataLoaded && this.selectedOption">
+    <!-- <ion-fab-button (click)="kirimAbsen()" data-desc="Kirim Presensi">
+      <ion-icon name="send"></ion-icon>
+    </ion-fab-button> -->
+    <ion-button (click)="kirimAbsen()">
+      <ion-icon slot="start" name="send"></ion-icon>
+      Kirim Presensi
+    </ion-button>
+  </ion-fab>
+  <ion-toast
+  [isOpen]="isToastOpen"
+  message="Data presensi tersimpan"
+  [duration]="1000"
+  (didDismiss)="setOpen(false)"
+></ion-toast>
+</ion-content>

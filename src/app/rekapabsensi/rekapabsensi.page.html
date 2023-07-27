@@ -1,0 +1,114 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/main/tabs/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Rekap Presensi</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="false">
+  <!-- filter -->
+  <div>
+    <ion-item>
+      <ion-label>Harian</ion-label>
+      <ion-datetime-button datetime="hari"></ion-datetime-button>
+      <ion-modal [keepContentsMounted]="true">
+        <ng-template>
+          <ion-datetime
+            id="hari"
+            locale="id-ID"
+            presentation="date"
+            showDefaultButtons="true"
+            (ionChange)="showHari($event)"
+            [(ngModel)]="myDate"
+          ></ion-datetime>
+        </ng-template>
+      </ion-modal>
+    </ion-item>
+    <ion-item button>
+      <ion-label>Bulanan</ion-label>
+      <ion-datetime-button datetime="bulan"></ion-datetime-button>
+      <ion-modal [keepContentsMounted]="true">
+        <ng-template>
+          <ion-datetime
+            id="bulan"
+            locale="id-ID"
+            presentation="month-year"
+            showDefaultButtons="true"
+            (ionChange)="showBulan($event)"
+          ></ion-datetime>
+        </ng-template>
+      </ion-modal>
+    </ion-item>
+    <ion-item button>
+      <ion-label>Semester</ion-label>
+      <ion-buttons slot="end">
+        <ion-button (click)="ganjil()" fill="solid" color="primary">
+          Ganjil
+        </ion-button>
+        <ion-button (click)="genap()" fill="solid" color="secondary">
+          Genap
+        </ion-button>
+      </ion-buttons>
+    </ion-item>
+  </div>
+  <!-- data per kelas-->
+  <div *ngIf="dataRekap?.data?.length > 0 && !(dataByname?.data?.length > 0)">
+    <ion-item>
+      <ion-text color="primary">
+        <h3>Data presensi {{mode}}</h3>
+      </ion-text>
+    </ion-item>
+    <ion-item>
+      <ion-text color="secondary">
+        <h4>{{ketmode}}</h4>
+      </ion-text>
+    </ion-item>
+    <ion-card *ngFor="let item of dataRekap.data ">
+      <ion-card-header>
+        <ion-card-title>{{item.kelas}}</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        Hadir : {{item.hadir}}<br />
+        Ijin : {{item.ijin}} <br />
+        Sakit : {{item.sakit}}<br />
+        Alpha : {{item.alpha}}<br />
+        Terlambat : {{item.terlambat}}
+      </ion-card-content>
+      <ion-button (click)="byname(mode,item.kelas,ketmode)" expand="block" fill="clear" shape="round">
+        by Name
+      </ion-button>
+    </ion-card>
+  </div>
+
+  <!-- byname -->
+<div *ngIf="(dataRekap?.data?.length > 0) && (dataByname?.data?.length > 0)" class="table-container">
+<table>
+  <tr>
+    <th style="width: 8%;">No</th>
+    <th style="width: 60%;">Nama</th>
+    <th style="width: 8%;">S</th>
+    <th style="width: 8%;">I</th>
+    <th style="width: 8%;">A</th>
+    <th style="width: 8%;">T</th>
+  </tr>
+  <tr *ngFor="let item of dataByname.data; let i=index">
+    <td>{{i+1}}</td>
+    <td>{{item.nama}}</td>
+    <td>{{item.ijin}}</td>
+    <td>{{item.sakit}}</td>
+    <td>{{item.alpha}}</td>
+    <td>{{item.terlambat}}</td>
+  </tr>
+</table>
+</div>
+
+<!-- toast -->
+  <ion-toast position="middle"
+    [isOpen]="isToastOpen"
+    message="Tidak ada data"
+    [duration]="1000"
+    (didDismiss)="setOpen(false)"
+  ></ion-toast>
+</ion-content>

@@ -1,0 +1,21 @@
+ion-app{
+  width: 100%;
+  --ion-background-color: #ffffff;
+}
+
+
+@media screen and (min-width: 768px) {
+  ion-app {
+    max-width: 768px;
+    margin: auto;
+  }
+  .scroll-content {
+    overflow-y:auto;
+  }
+}
+
+@media (prefers-color-scheme: dark){
+  ion-app{
+    --ion-background-color: #252525;
+  }
+}

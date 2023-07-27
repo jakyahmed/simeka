@@ -1,0 +1,31 @@
+<ion-content>
+<div class="background-container">
+  <div class="background-login">
+    <div *ngFor="let number of numbersArray" class="particle"></div>
+    <div class="login-container">
+      <ion-card>
+        <ion-card-header>
+          <ion-card-subtitle>Login</ion-card-subtitle>
+          <ion-card-title>SIMSMEKSAKA</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <ion-list>
+            <ion-item>
+              <ion-label position="floating">Username</ion-label>
+              <ion-input type="text" [(ngModel)]="username" aria-label="username"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label position="floating">Password</ion-label>
+              <ion-input type="password" [(ngModel)]="password" aria-label="password"></ion-input>
+            </ion-item>
+          </ion-list>
+        
+          <div class="ion-padding">
+            <ion-button expand="full" (click)="login()">Login</ion-button>
+          </div>
+        </ion-card-content>
+       </ion-card>
+     </div>
+  </div>
+</div>
+</ion-content>
