@@ -39,15 +39,15 @@ export class TabhomePage implements OnInit {
   
   gotoAbsensi() {
     // this.router.navigate(['main/tabs/absensi']);
-    this.nav.navigateForward('main/tabs/absensi');
+    this.nav.navigateRoot('main/tabs/absensi');
   }
   gotoRekapAbsensi() {
     // this.router.navigate(['main/tabs/rekapabsensi']);
-    this.nav.navigateForward('main/tabs/rekapabsensi');
+    this.nav.navigateRoot('main/tabs/rekapabsensi');
   }
 
   gotoCloud(){
-    this.nav.navigateForward('main/tabs/cloud');
+    this.nav.navigateRoot('main/tabs/cloud');
   }
 
   logout() {
