@@ -17,7 +17,7 @@ export class AuthService {
   private async loadLoginStatus() {
     const isLoggedIn = await this.storage.get('loggedInUser');
     this.loggedIn.next(!!isLoggedIn);
-    const userdata=await this.storage.get('userdata');
+    const userdata= await this.storage.get('userdata');
     this.userData.next(userdata);
   }
 

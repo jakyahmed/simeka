@@ -10,6 +10,7 @@ import {
 } from '@angular/common/http';
 import { Storage } from '@ionic/storage-angular';
 import { AuthService } from '../services/auth.service';
+import { GlobalService } from '../services/global.service';
 
 @Component({
   selector: 'app-login',
@@ -24,6 +25,8 @@ export class LoginPage implements OnInit {
   isLogin: boolean = false;
   numbersArray: number[] = [];
   redir: string = '/main/tabs/home';
+  host=new GlobalService().base_url;
+  isToastOpen:boolean=false;
 
   constructor(
     private router: Router,
@@ -62,7 +65,7 @@ export class LoginPage implements OnInit {
     };
     let that = this;
     this.http
-      .post('http://localhost/simeka/index.php/loginapi/auth', postData, {
+      .post(`${this.host}simeka/index.php/loginapi/auth`, postData, {
         headers: headers,
       })
       .subscribe({
@@ -75,6 +78,8 @@ export class LoginPage implements OnInit {
               that.storage.set('userdata', response);
               that.router.navigate([that.redir]);
             });
+          }else{
+            that.setOpen(true);
           }
           console.log(response);
         },
@@ -83,5 +88,9 @@ export class LoginPage implements OnInit {
     // this.router.navigate(['/main/tabs/home']);
     // this.isLogin=true;
     // console.log(this.router);
+  }
+
+  setOpen(b:boolean){
+    this.isToastOpen=b;
   }
 }

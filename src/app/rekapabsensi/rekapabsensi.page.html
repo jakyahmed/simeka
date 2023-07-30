@@ -74,6 +74,7 @@
         Ijin : {{item.ijin}} <br />
         Sakit : {{item.sakit}}<br />
         Alpha : {{item.alpha}}<br />
+        Bolos : {{item.bolos}}<br />
         Terlambat : {{item.terlambat}}
       </ion-card-content>
       <ion-button (click)="byname(mode,item.kelas,ketmode)" expand="block" fill="clear" shape="round">
@@ -87,10 +88,11 @@
 <table>
   <tr>
     <th style="width: 8%;">No</th>
-    <th style="width: 60%;">Nama</th>
+    <th style="width: 52%;">Nama</th>
     <th style="width: 8%;">S</th>
     <th style="width: 8%;">I</th>
     <th style="width: 8%;">A</th>
+    <th style="width: 8%;">B</th>
     <th style="width: 8%;">T</th>
   </tr>
   <tr *ngFor="let item of dataByname.data; let i=index">
@@ -99,6 +101,7 @@
     <td>{{item.ijin}}</td>
     <td>{{item.sakit}}</td>
     <td>{{item.alpha}}</td>
+    <td>{{item.bolos}}</td>
     <td>{{item.terlambat}}</td>
   </tr>
 </table>

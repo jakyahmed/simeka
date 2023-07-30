@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule, NavController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
+import { GlobalService } from '../services/global.service';
 
 @Component({
   selector: 'app-tabhome',
@@ -15,6 +16,7 @@ import { AuthService } from '../services/auth.service';
 export class TabhomePage implements OnInit {
   isLogin: boolean = false;
   username:string='';
+  home=new GlobalService().base_url;
 
   constructor(private router: Router, private auth: AuthService, private nav:NavController) {
     this.auth.isLoggedIn().subscribe((val) => {
@@ -22,8 +24,10 @@ export class TabhomePage implements OnInit {
     });
 
     this.auth.getUserdata().subscribe((val)=>{
-      this.username=val.email;
-    })
+      if(val!==null){
+        this.username=val.email;
+      }
+    });
   }
 
   ngOnInit() {
@@ -39,7 +43,7 @@ export class TabhomePage implements OnInit {
   }
   gotoRekapAbsensi() {
     // this.router.navigate(['main/tabs/rekapabsensi']);
-    this.nav.navigateForward('main/tabs/absensi');
+    this.nav.navigateForward('main/tabs/rekapabsensi');
   }
 
   gotoCloud(){
@@ -50,5 +54,6 @@ export class TabhomePage implements OnInit {
     this.auth.setLoggedInStatus(false);
     this.auth.removeUserdata();
     this.isLogin=false;
+    this.nav.navigateRoot('/login');
   }
 }

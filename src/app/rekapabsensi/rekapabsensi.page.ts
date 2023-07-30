@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { isEmpty, tap } from 'rxjs/operators';
+import { GlobalService } from '../services/global.service';
 
 @Component({
   selector: 'app-rekapabsensi',
@@ -19,6 +20,7 @@ export class RekapabsensiPage implements OnInit {
   dataByname: any = [];
   mode: string = '';
   ketmode: string = '';
+  host=new GlobalService().base_url;
 
   constructor(private http: HttpClient) {}
 
@@ -38,7 +40,7 @@ export class RekapabsensiPage implements OnInit {
       date = formatDate(e.detail.value, 'yyyy-MM-dd', 'en-US');
       this.http
         .get<any[]>(
-          'http://localhost/simeka/index.php/siswaapi/rekap/harian/' +
+          `${this.host}simeka/index.php/siswaapi/rekap/harian/` +
             encodeURI(date)
         )
         .pipe(
@@ -71,7 +73,7 @@ export class RekapabsensiPage implements OnInit {
     date = formatDate(tanggal, 'yyyy-MM', 'en-US');
     this.http
       .get<any[]>(
-        'http://localhost/simeka/index.php/siswaapi/rekap/bulanan/' +
+        `${this.host}simeka/index.php/siswaapi/rekap/bulanan/` +
           encodeURI(date)
       )
       .pipe(
@@ -98,7 +100,7 @@ export class RekapabsensiPage implements OnInit {
     this.dataByname=[];
     this.http
       .get<any[]>(
-        'http://localhost/simeka/index.php/siswaapi/rekap/semester/ganjil'
+        `${this.host}simeka/index.php/siswaapi/rekap/semester/ganjil`
       )
       .pipe(
         tap((response) => {
@@ -119,7 +121,7 @@ export class RekapabsensiPage implements OnInit {
     this.dataByname=[];
     this.http
       .get<any[]>(
-        'http://localhost/simeka/index.php/siswaapi/rekap/semester/genap'
+        `${this.host}simeka/index.php/siswaapi/rekap/semester/genap`
       )
       .pipe(
         tap((response) => {
@@ -138,7 +140,7 @@ export class RekapabsensiPage implements OnInit {
   byname(mode: string, kelas: string, tgl: string) {
     this.http
       .get<any[]>(
-        'http://localhost/simeka/index.php/siswaapi/byname/' +
+        `${this.host}simeka/index.php/siswaapi/byname/` +
           mode +
           '/' +
           kelas +

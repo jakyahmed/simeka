@@ -10,6 +10,7 @@ import {
   HttpEventType,
 } from '@angular/common/http';
 import { tap } from 'rxjs/operators';
+import { GlobalService } from '../services/global.service';
 
 interface FileInfo {
   name: string;
@@ -31,33 +32,54 @@ export class CloudPage implements OnInit {
   progress: number = 0;
   id_user: string = '';
   fileList: FileInfo[] = [];
+  host = new GlobalService().base_url;
 
   constructor(
     private auth: AuthService,
     private router: Router,
     private http: HttpClient
-  ) {
-    this.auth.isLoggedIn().subscribe((isLogin) => {
-      if (!isLogin) {
-        this.router.navigate(['/login'], {
-          queryParams: { redir: '/main/tabs/cloud' },
-        });
-        console.log('login: ' + isLogin);
-      }
-    });
+  ) {}
 
-    this.auth.getUserdata().subscribe((data) => {
-      console.log(data);
-      if (data) {
-        this.username = data.full_name;
-        this.id_user = data.id_users;
-        console.log(this.username);
-        if (data.id_user_level !== '1') {
-          this.router.navigate(['/main/tabs/home']);
-        }
-      }
-    });
+   cekLogin() {
+    this.auth
+      .isLoggedIn()
+      .pipe(
+        tap((isLogin) => {
+          if (isLogin == false) {
+            this.router.navigate(['/login'], {
+              queryParams: { redir: '/main/tabs/cloud' },replaceUrl:true,skipLocationChange:true
+            });
+            console.log('login: ' + isLogin);
+          }
+        })
+      )
+      .subscribe();
 
+    this.auth
+      .getUserdata()
+      .pipe(
+        tap((data) => {
+          console.log(data);
+          if (data !== null) {
+            this.username = data.full_name;
+            this.id_user = data.id_users;
+            console.log(this.username);
+            if (data.id_user_level == '1' || data.id_user_level == '2') {
+              
+            }else{
+              this.router.navigate(['/main/tabs/home']);
+            }
+          }
+        })
+      )
+      .subscribe();
+  }
+
+  ionViewWillEnter() {
+    this.cekLogin();
+    console.log('cek login');
+  }
+  ionViewDidEnter() {
     this.fetchFileListFromServer();
   }
 
@@ -79,7 +101,7 @@ export class CloudPage implements OnInit {
       uploadData.append('id_user', this.id_user);
 
       this.http
-        .post('http://localhost/simeka/index.php/fileapi/upload', uploadData, {
+        .post(`${this.host}simeka/index.php/fileapi/upload`, uploadData, {
           reportProgress: true,
           observe: 'events',
         })
@@ -102,7 +124,9 @@ export class CloudPage implements OnInit {
     this.fileList = [];
     // Assuming your server returns the list of files in JSON format
     this.http
-      .get<FileInfo[]>('http://localhost/simeka/index.php/fileapi/listfile/'+this.id_user)
+      .get<FileInfo[]>(
+        `${this.host}simeka/index.php/fileapi/listfile/` + this.id_user
+      )
       .pipe(
         tap((fileList) => {
           this.fileList = fileList;
@@ -117,5 +141,9 @@ export class CloudPage implements OnInit {
     const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
     const i = Math.floor(Math.log(size) / Math.log(k));
     return parseFloat((size / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+  }
+
+  ionViewDidLeave() {
+    console.log('leave');
   }
 }

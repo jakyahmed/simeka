@@ -10,6 +10,7 @@ import {
 import { tap } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
+import { GlobalService } from '../services/global.service';
 
 @Component({
   selector: 'app-absensi',
@@ -25,51 +26,71 @@ export class AbsensiPage implements OnInit {
   myDate = new Date();
   isToastOpen: boolean = false;
   username: string = '';
+  host = new GlobalService().base_url;
 
   constructor(
     private http: HttpClient,
     private router: Router,
     private auth: AuthService,
-    private nav:NavController
+    private nav: NavController
   ) {
-    this.auth.isLoggedIn().subscribe((isLogin) => {
-      if (!isLogin) {
-        this.router.navigate(['/login'], {
-          queryParams: { redir: '/main/tabs/absensi' },
-        });
-        console.log('login: ' + isLogin);
-      }
-    });
 
-    this.auth.getUserdata().subscribe((data) => {
-      console.log(data);
-      if (data) {
-        this.username = data.full_name;
-        console.log(this.username);
-        if (data.id_user_level !== "1") {
-          this.router.navigate(['/main/tabs/home']);
-        }
-      }
-    });
+  }
+
+  cekLogin() {
+    this.auth
+      .isLoggedIn()
+      .pipe(
+        tap((isLogin) => {
+          if (isLogin==false) {
+            this.router.navigate(['/login'], {
+              queryParams: { redir: '/main/tabs/absensi' },replaceUrl:true,skipLocationChange:true
+            });
+            console.log('login: ' + isLogin);
+          }
+        })
+      )
+      .subscribe();
+
+    this.auth
+      .getUserdata()
+      .pipe(
+        tap((data) => {
+          console.log(data);
+          if (data !==null) {
+            this.username = data.full_name;
+            console.log(this.username);
+            if (data.id_user_level == '1' || data.id_user_level == '2') {
+              
+            }else{
+              this.router.navigate(['/main/tabs/home']);
+            }
+          }
+        })
+      )
+      .subscribe();
   }
 
   ngOnInit() {
     this.dataSiswa.data = [];
   }
 
-  ionViewDidEnter() {}
+  ionViewWillEnter() {
+   this.cekLogin();
+    console.log('cek login');
+    // this.router.navigate(['/main/tabs/absensi'],{replaceUrl:true,skipLocationChange:true});
+  }
 
   ionViewDidLeave() {
     this.selectedOption = '';
     this.dataLoaded = false;
     this.dataSiswa = [];
-
   }
 
   loadData() {
     this.http
       .get<any[]>(
-        `http://localhost/simeka/index.php/siswaapi/api/${encodeURI(
+        `${this.host}simeka/index.php/siswaapi/api/${encodeURI(
           this.selectedOption
         )}`
       ) //${this.selectedOption}
@@ -116,7 +137,7 @@ export class AbsensiPage implements OnInit {
     console.log(postData);
     var that = this;
     this.http
-      .post('http://localhost/simeka/index.php/siswaapi/post', postData, {
+      .post(`${this.host}simeka/index.php/siswaapi/post`, postData, {
         headers: headers,
       })
       .subscribe({
