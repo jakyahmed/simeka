@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonicModule } from '@ionic/angular';
+import { ActionSheetController, IonicModule } from '@ionic/angular';
 import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
 import {
@@ -37,17 +37,20 @@ export class CloudPage implements OnInit {
   constructor(
     private auth: AuthService,
     private router: Router,
-    private http: HttpClient
+    private http: HttpClient,
+    private actionSheetController: ActionSheetController
   ) {}
 
-   cekLogin() {
+  cekLogin() {
     this.auth
       .isLoggedIn()
       .pipe(
         tap((isLogin) => {
           if (isLogin == false) {
             this.router.navigate(['/login'], {
-              queryParams: { redir: '/main/tabs/cloud' },replaceUrl:true,skipLocationChange:true
+              queryParams: { redir: '/main/tabs/cloud' },
+              replaceUrl: true,
+              skipLocationChange: true,
             });
             console.log('login: ' + isLogin);
           }
@@ -65,8 +68,7 @@ export class CloudPage implements OnInit {
             this.id_user = data.id_users;
             console.log(this.username);
             if (data.id_user_level == '1' || data.id_user_level == '2') {
-              
-            }else{
+            } else {
               this.router.navigate(['/main/tabs/home']);
             }
           }
@@ -145,5 +147,82 @@ export class CloudPage implements OnInit {
 
   ionViewDidLeave() {
     console.log('leave');
+  }
+
+  async openActionSheet(filename: string) {
+    const actionSheet = await this.actionSheetController.create({
+      header: 'Actions',
+      buttons: [
+        {
+          text: 'Download',
+          handler: () => {
+            this.processAction('Download', filename);
+          },
+        },
+        {
+          text: 'Delete',
+          role: 'destructive',
+          handler: () => {
+            this.processAction('Delete', filename);
+          },
+        },
+        {
+          text: 'Cancel',
+          role: 'cancel',
+        },
+      ],
+    });
+    await actionSheet.present();
+  }
+
+  processAction(action: string, filename: string) {
+    console.log(`Performed action: ${action} on item with ID: ${filename}`);
+    switch (action) {
+      case 'Download':
+        this.downloadFile(filename);
+        break;
+
+      case 'Delete':
+        this.deleteFile(filename);
+        break;
+
+      default:
+        break;
+    }
+  }
+
+  downloadFile(file: string) {
+    const link = document.createElement('a');
+    link.href = `${this.host}/simeka/uploads/${this.id_user}/${file}`;
+    link.target = '_blank';
+    // link.download = file;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
+
+  deleteFile(file: string) {
+    const postData = new FormData();
+    postData.append('file', file);
+    postData.append('id_user', this.id_user);
+    this.http
+      .post(`${this.host}simeka/index.php/fileapi/delete`, postData)
+      .subscribe({
+        next: () => {
+          this.reloadPage();
+          console.log('next');
+        },
+        error: () => {
+          console.log('error');
+        },
+        complete: () => {
+          console.log('complete');
+        },
+      });
+  }
+
+  reloadPage() {
+    console.log('reload');
+    window.location.reload();
   }
 }

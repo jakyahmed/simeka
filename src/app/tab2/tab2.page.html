@@ -7,16 +7,16 @@
 </ion-header>
 
 <ion-content>
-<ion-item *ngIf="info">
-  <ion-card *ngFor="let item of info">
-    <img alt="{{item.image}}" src="{{host}}simeka/uploads/{{item.image}}" />
+<ion-item *ngFor="let item of info">
+  <ion-card >
     <ion-card-header>
       <ion-card-title>Info BKK</ion-card-title>
-      <ion-card-subtitle>Card Subtitle</ion-card-subtitle>
+      <!-- <ion-card-subtitle>Card Subtitle</ion-card-subtitle> -->
     </ion-card-header>
   
     <ion-card-content>
       <div [innerHTML]="item.article"></div>
+      <img alt="{{item.image}}" src="{{host}}simeka/uploads/{{item.image}}" />
     </ion-card-content>
   </ion-card>
 </ion-item>

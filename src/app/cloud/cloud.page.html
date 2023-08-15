@@ -14,11 +14,12 @@
 
     <!-- Display the list of files received from the server -->
   <ion-list *ngIf="fileList.length > 0">
-    <ion-item *ngFor="let file of fileList">
+    <ion-item *ngFor="let file of fileList" (click)="openActionSheet(file.name)">
       <ion-label>{{ file.name }}</ion-label>
       <ion-text>{{ formatFileSize(file.size) }}</ion-text>
       <!-- Add more properties as needed -->
     </ion-item>
   </ion-list>
 
+  
 </ion-content>
