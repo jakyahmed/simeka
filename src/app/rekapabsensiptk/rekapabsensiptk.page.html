@@ -3,12 +3,11 @@
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/main/tabs/home"></ion-back-button>
     </ion-buttons>
-    <ion-title>Rekap Presensi</ion-title>
+    <ion-title>Rekap Presensi PTK</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="false">
-  <!-- filter -->
+<ion-content [fullscreen]="true">
   <div>
     <ion-item>
       <ion-label>Harian</ion-label>
@@ -65,11 +64,15 @@
         <h4>{{ketmode}}</h4>
       </ion-text>
     </ion-item>
-    <ion-item *ngIf="(dataByname?.data?.length > 0)">
-      <ion-label>{{kelasaktif}}</ion-label>
+    </div>
+    <div *ngIf="dataRekap?.data?.length > 0 && !(dataByname?.data?.length > 0)">
+    <ion-item>
+      <ion-button (click)="byname(mode,ketmode)" expand="block" fill="clear" shape="round">
+        <ion-icon slot="start" name="grid-outline"></ion-icon>
+        Tampilkan dalam Format Tabel
+      </ion-button>
+
     </ion-item>
-  </div>
-  <div *ngIf="dataRekap?.data?.length > 0 && !(dataByname?.data?.length > 0)">
     <ion-card *ngFor="let item of dataRekap.data ">
       <ion-card-header>
         <ion-card-title>{{item.kelas}}</ion-card-title>
@@ -79,13 +82,10 @@
         Ijin : {{item.ijin}} <br />
         Sakit : {{item.sakit}}<br />
         Alpha : {{item.alpha}}<br />
-        Bolos : {{item.bolos}}<br />
-        Terlambat : {{item.terlambat}}
+        DL: {{item.dl}}<br />
+        DL Tanpa Tugas ke Siswa : {{item.dlt}} <br/>
+        Cuti: {{item.cuti}}
       </ion-card-content>
-      <ion-button (click)="byname(mode,item.kelas,ketmode)" expand="block" fill="outline" shape="round">
-        <ion-icon slot="start" name="person-outline"></ion-icon>
-        by Name
-      </ion-button>
     </ion-card>
   </div>
 
@@ -94,12 +94,13 @@
 <table>
   <tr>
     <th style="width: 8%;">No</th>
-    <th style="width: 52%;">Nama</th>
+    <th style="width: 44%;">Nama</th>
     <th style="width: 8%;">S</th>
     <th style="width: 8%;">I</th>
     <th style="width: 8%;">A</th>
-    <th style="width: 8%;">B</th>
-    <th style="width: 8%;">T</th>
+    <th style="width: 8%;">DL</th>
+    <th style="width: 8%;">DLT</th>
+    <th style="width: 8%;">CT</th>
   </tr>
   <tr *ngFor="let item of dataByname.data; let i=index">
     <td>{{i+1}}</td>
@@ -107,8 +108,9 @@
     <td>{{item.sakit}}</td>
     <td>{{item.ijin}}</td>
     <td>{{item.alpha}}</td>
-    <td>{{item.bolos}}</td>
-    <td>{{item.terlambat}}</td>
+    <td>{{item.dl}}</td>
+    <td>{{item.dlt}}</td>
+    <td>{{item.cuti}}</td>
   </tr>
 </table>
 </div>

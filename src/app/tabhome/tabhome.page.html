@@ -10,11 +10,6 @@
 
 <ion-content>
   <div class="menu-container">
-    <div class="menu-item">
-      <a href="{{home}}simeka/">
-      <ion-icon name="cog"></ion-icon>
-      <p>Admin</p></a>
-    </div>
     <div class="menu-item" (click)="gotoAbsensi()">
       <ion-icon name="finger-print"></ion-icon>
       <p>Presensi PD</p>
@@ -22,6 +17,10 @@
     <div class="menu-item" (click)="gotoRekapAbsensi()">
       <ion-icon name="checkbox"></ion-icon>
       <p>Rekap Presensi</p>
+    </div>
+    <div class="menu-item" (click)="gotoPresensiPTK()">
+      <ion-icon name="finger-print"></ion-icon>
+      <p>Presensi PTK</p>
     </div>
     <div class="menu-item">
       <a
@@ -80,6 +79,11 @@
     <div class="menu-item" (click)="gotoCloud()">
       <ion-icon name="save"></ion-icon>
       <p>Penyimpanan Cloud</p>
+    </div>
+    <div class="menu-item">
+      <a href="{{home}}simeka/">
+      <ion-icon name="cog"></ion-icon>
+      <p>Admin</p></a>
     </div>
     <!-- <div class="menu-item" (click)="logout()" *ngIf="isLogin">
       <ion-icon name="exit"></ion-icon>

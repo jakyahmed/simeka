@@ -2,18 +2,18 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule, formatDate } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
-import { isEmpty, tap } from 'rxjs/operators';
 import { GlobalService } from '../services/global.service';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { tap } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-rekapabsensi',
-  templateUrl: './rekapabsensi.page.html',
-  styleUrls: ['./rekapabsensi.page.scss'],
+  selector: 'app-rekapabsensiptk',
+  templateUrl: './rekapabsensiptk.page.html',
+  styleUrls: ['./rekapabsensiptk.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule, HttpClientModule],
+  imports: [IonicModule, CommonModule, FormsModule, HttpClientModule]
 })
-export class RekapabsensiPage implements OnInit {
+export class RekapabsensiptkPage implements OnInit {
   myDate: String = new Date().toISOString();
   isToastOpen: boolean = false;
   dataRekap: any = [];
@@ -21,11 +21,10 @@ export class RekapabsensiPage implements OnInit {
   mode: string = '';
   ketmode: string = '';
   host=new GlobalService().base_url;
-  kelasaktif:string='';
+  constructor(private http: HttpClient) { }
 
-  constructor(private http: HttpClient) {}
-
-  ngOnInit() {}
+  ngOnInit() {
+  }
 
   ionViewDidLeave() {
     this.dataRekap = [];
@@ -41,7 +40,7 @@ export class RekapabsensiPage implements OnInit {
       date = formatDate(e.detail.value, 'yyyy-MM-dd', 'en-US');
       this.http
         .get<any[]>(
-          `${this.host}simeka/index.php/siswaapi/rekap/harian/` +
+          `${this.host}simeka/index.php/ptkapi/rekap/harian/` +
             encodeURI(date)
         )
         .pipe(
@@ -74,7 +73,7 @@ export class RekapabsensiPage implements OnInit {
     date = formatDate(tanggal, 'yyyy-MM', 'en-US');
     this.http
       .get<any[]>(
-        `${this.host}simeka/index.php/siswaapi/rekap/bulanan/` +
+        `${this.host}simeka/index.php/ptkapi/rekap/bulanan/` +
           encodeURI(date)
       )
       .pipe(
@@ -101,7 +100,7 @@ export class RekapabsensiPage implements OnInit {
     this.dataByname=[];
     this.http
       .get<any[]>(
-        `${this.host}simeka/index.php/siswaapi/rekap/semester/ganjil`
+        `${this.host}simeka/index.php/ptkapi/rekap/semester/ganjil`
       )
       .pipe(
         tap((response) => {
@@ -122,7 +121,7 @@ export class RekapabsensiPage implements OnInit {
     this.dataByname=[];
     this.http
       .get<any[]>(
-        `${this.host}simeka/index.php/siswaapi/rekap/semester/genap`
+        `${this.host}simeka/index.php/ptkapi/rekap/semester/genap`
       )
       .pipe(
         tap((response) => {
@@ -138,20 +137,17 @@ export class RekapabsensiPage implements OnInit {
       .subscribe();
   }
 
-  byname(mode: string, kelas: string, tgl: string) {
+  byname(mode: string, tgl: string) {
     this.http
       .get<any[]>(
-        `${this.host}simeka/index.php/siswaapi/byname/` +
+        `${this.host}simeka/index.php/ptkapi/byname/` +
           mode +
-          '/' +
-          kelas +
           '/' +
           tgl
       )
       .pipe(
         tap((response) => {
           this.dataByname = response;
-          this.kelasaktif=kelas;
           if (response == null) {
             this.isToastOpen = true;
           }

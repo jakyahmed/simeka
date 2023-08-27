@@ -33,18 +33,18 @@ export class AbsensiPage implements OnInit {
     private router: Router,
     private auth: AuthService,
     private nav: NavController
-  ) {
-
-  }
+  ) {}
 
   cekLogin() {
     this.auth
       .isLoggedIn()
       .pipe(
         tap((isLogin) => {
-          if (isLogin==false) {
+          if (isLogin == false) {
             this.router.navigate(['/login'], {
-              queryParams: { redir: '/main/tabs/absensi' },replaceUrl:true,skipLocationChange:true
+              queryParams: { redir: '/main/tabs/absensi' },
+              replaceUrl: true,
+              skipLocationChange: true,
             });
             console.log('login: ' + isLogin);
           }
@@ -57,12 +57,11 @@ export class AbsensiPage implements OnInit {
       .pipe(
         tap((data) => {
           console.log(data);
-          if (data !==null) {
+          if (data !== null) {
             this.username = data.full_name;
             console.log(this.username);
             if (data.id_user_level == '1' || data.id_user_level == '2') {
-              
-            }else{
+            } else {
               this.router.navigate(['/main/tabs/home']);
             }
           }
@@ -76,7 +75,7 @@ export class AbsensiPage implements OnInit {
   }
 
   ionViewWillEnter() {
-   this.cekLogin();
+    this.cekLogin();
     console.log('cek login');
     // this.router.navigate(['/main/tabs/absensi'],{replaceUrl:true,skipLocationChange:true});
   }

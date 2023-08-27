@@ -49,6 +49,14 @@ export const routes: Routes = [
         // loadComponent: () => import('../cloud/cloud.page').then( m => m.CloudPage)
         component:CloudPage
       },
+      {
+        path: 'presensiptk',
+        loadComponent: () => import('../presensiptk/presensiptk.page').then( m => m.PresensiptkPage)
+      },
+      {
+        path: 'rekapabsensiptk',
+        loadComponent: () => import('../rekapabsensiptk/rekapabsensiptk.page').then( m => m.RekapabsensiptkPage)
+      },
     ],
   },
   {

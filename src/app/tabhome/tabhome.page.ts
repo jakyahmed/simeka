@@ -49,6 +49,10 @@ export class TabhomePage implements OnInit {
   gotoCloud(){
     this.nav.navigateRoot('main/tabs/cloud');
   }
+  
+  gotoPresensiPTK(){
+    this.nav.navigateRoot('main/tabs/presensiptk');
+  }
 
   logout() {
     this.auth.setLoggedInStatus(false);

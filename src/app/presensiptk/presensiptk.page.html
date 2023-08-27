@@ -1,0 +1,76 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/main/tabs/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Presensi PTK</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-toolbar>
+    <ion-buttons slot="primary">
+      <ion-label slot="start">{{myDate|date: 'EEEE, d MMMM y'}}</ion-label>
+      <ion-button fill="outline" (click)="goRekapPTK()">
+        <ion-icon slot="start" name="document"></ion-icon>
+        Rekap
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+  <ion-item *ngIf="dataLoaded">
+   <div class="table-container">
+    <table *ngIf="dataPTK.data">
+      <thead>
+        <tr>
+          <th style="width: 15%;">No</th>
+          <th style="width: 65%;">Nama</th>
+          <th style="width: 20%;">Presensi</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of dataPTK.data; let i=index">
+          <td>{{i + 1}}</td>
+          <td>{{ item.nama }}</td>
+          <td>
+            <ion-radio-group [(ngModel)]="item.kehadiran" name="item.id">
+              <ion-radio value="hadir" labelPlacement="end" justify="start" color="success">H</ion-radio>
+              <ion-radio value="sakit" labelPlacement="end" justify="start" color="warning">S</ion-radio>
+              <ion-radio value="ijin" labelPlacement="end" justify="start" color="warning">I</ion-radio>
+              <ion-radio value="alpha" labelPlacement="end" justify="start" color="danger">A</ion-radio>
+              <ion-radio value="dl" labelPlacement="end" justify="start" color="success">DL</ion-radio>
+              <ion-radio value="dlt" labelPlacement="end" justify="start" color="danger">DL-T</ion-radio>
+              <ion-radio value="cuti" labelPlacement="end" justify="start" color="secondary">C</ion-radio>
+            </ion-radio-group>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="7">
+           <ion-label>Perhatian: Jangan lupa klik tombol kirim setelah mengisi presensi</ion-label>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+   </div>
+  </ion-item>
+  <ion-item *ngIf="!dataLoaded">
+    <ion-button (click)="showTable()">
+      <ion-icon slot="start" name="add"></ion-icon>
+      Input Presensi
+    </ion-button>
+  </ion-item>
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed" *ngIf="dataLoaded">
+    <!-- <ion-fab-button (click)="kirimAbsen()" data-desc="Kirim Presensi">
+      <ion-icon name="send"></ion-icon>
+    </ion-fab-button> -->
+    <ion-button (click)="kirimAbsen()">
+      <ion-icon slot="start" name="send"></ion-icon>
+      Kirim Presensi
+    </ion-button>
+  </ion-fab>
+  <ion-toast
+  [isOpen]="isToastOpen"
+  message="Data presensi tersimpan"
+  [duration]="1000"
+  (didDismiss)="setOpen(false)"
+></ion-toast>
+</ion-content>
