@@ -17,7 +17,7 @@
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
-  <ion-item *ngIf="dataLoaded">
+  <ion-item *ngIf="dataLoaded && level=='1'">
    <div class="table-container">
     <table *ngIf="dataPTK.data">
       <thead>
@@ -58,7 +58,7 @@
       Input Presensi
     </ion-button>
   </ion-item>
-  <ion-fab vertical="bottom" horizontal="end" slot="fixed" *ngIf="dataLoaded">
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed" *ngIf="dataLoaded && level=='1'">
     <!-- <ion-fab-button (click)="kirimAbsen()" data-desc="Kirim Presensi">
       <ion-icon name="send"></ion-icon>
     </ion-fab-button> -->
@@ -67,6 +67,9 @@
       Kirim Presensi
     </ion-button>
   </ion-fab>
+  <ion-item *ngIf="!(level=='1')">
+    <ion-label>Anda hanya diijinkan melihat rekap presensi.</ion-label>
+  </ion-item>
   <ion-toast
   [isOpen]="isToastOpen"
   message="Data presensi tersimpan"

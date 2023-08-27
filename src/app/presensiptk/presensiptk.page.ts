@@ -3,9 +3,14 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { GlobalService } from '../services/global.service';
-import { HttpClient, HttpClientModule, HttpHeaders } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpClientModule,
+  HttpHeaders,
+} from '@angular/common/http';
 import { tap } from 'rxjs/operators';
 import { Router } from '@angular/router';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-presensiptk',
@@ -21,18 +26,62 @@ export class PresensiptkPage implements OnInit {
   isToastOpen: boolean = false;
   username: string = '';
   host = new GlobalService().base_url;
-  constructor(private http: HttpClient, private router:Router) {}
+  level: string = '';
+
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+    private auth: AuthService
+  ) {}
 
   ngOnInit() {
     this.dataPTK.data = [];
     this.loadData();
   }
+  ionViewWillEnter() {
+    this.cekLogin();
+    console.log('cek login');
+
+  }
+  cekLogin() {
+    this.auth
+      .isLoggedIn()
+      .pipe(
+        tap((isLogin) => {
+          if (isLogin == false) {
+            this.router.navigate(['/login'], {
+              queryParams: { redir: '/main/tabs/absensi' },
+              replaceUrl: true,
+              skipLocationChange: true,
+            });
+            console.log('login: ' + isLogin);
+          } else {
+            this.auth
+              .getUserdata()
+              .pipe(
+                tap((data) => {
+                  console.log(data);
+                  if (data !== null) {
+                    this.username = data.full_name;
+                    this.level = data.id_user_level;
+                    console.log(this.username);
+                    if (this.level == '1' || this.level == '2') {
+                    } else {
+                      this.router.navigate(['/main/tabs/home']);
+                    }
+                  }
+                })
+              )
+              .subscribe();
+          }
+        })
+      )
+      .subscribe();
+  }
 
   loadData() {
     this.http
-      .get<any[]>(
-        `${this.host}simeka/index.php/ptkapi/api`
-      ) //${this.selectedOption}
+      .get<any[]>(`${this.host}simeka/index.php/ptkapi/api`) //${this.selectedOption}
       .pipe(
         tap((response) => {
           this.dataPTK = response;

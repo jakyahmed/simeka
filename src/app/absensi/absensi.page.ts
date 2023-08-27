@@ -31,9 +31,7 @@ export class AbsensiPage implements OnInit {
   constructor(
     private http: HttpClient,
     private router: Router,
-    private auth: AuthService,
-    private nav: NavController
-  ) {}
+    private auth: AuthService  ) {}
 
   cekLogin() {
     this.auth
