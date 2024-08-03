@@ -5,6 +5,10 @@ import { IonicModule } from '@ionic/angular';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { isEmpty, tap } from 'rxjs/operators';
 import { GlobalService } from '../services/global.service';
+// for export table
+import * as XLSX from 'xlsx';
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
 
 @Component({
   selector: 'app-rekapabsensi',
@@ -159,5 +163,54 @@ export class RekapabsensiPage implements OnInit {
         })
       )
       .subscribe();
+  }
+
+
+  exportToExcel() {
+    const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(document.getElementById('table-data'));
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+    XLSX.writeFile(wb, 'Rekap_Presensi.xlsx');
+  }
+
+  exportToPDF() {
+    const doc = new jsPDF();
+    doc.text('Rekapitulasi Presensi Online', 14, 16);
+    doc.text('Praktik Kerja Lapangan (PKL)', 14, 22);
+    doc.text('SMK Negeri 1 Kalibawang', 14, 28);
+
+    const table = document.getElementById('table-data')?.getElementsByTagName('table')[0];
+    const rows = table?.querySelectorAll('tr');
+    const data: any[] = [];
+
+    rows?.forEach(row => {
+      const rowData: any[] = [];
+      row.querySelectorAll('th, td').forEach(cell => rowData.push(cell.textContent));
+      data.push(rowData);
+    });
+
+    (doc as any).autoTable({
+      head: [data[0], data[1]],
+      body: data.slice(2),
+      startY: 40, // Adjust start position for the table
+      theme: 'striped', // Optional: add theme to table for better styling
+      styles: {
+        fontSize: 8, // Adjust font size
+        cellPadding: 2, // Adjust cell padding
+      },
+      columnStyles: {
+        0: { cellWidth: 10 }, // No
+        1: { cellWidth: 30 }, // Nama
+        2: { cellWidth: 20 }, // Bulan 7
+        3: { cellWidth: 20 }, // Bulan 8
+        4: { cellWidth: 20 }, // Bulan 9
+        5: { cellWidth: 20 }, // Bulan 10
+        6: { cellWidth: 20 }, // Bulan 11
+        7: { cellWidth: 20 }, // Bulan 12
+      },
+      margin: { top: 40 }, // Adjust the margin to ensure text is not overlapped
+    });
+
+    doc.save('Rekap_Presensi.pdf');
   }
 }

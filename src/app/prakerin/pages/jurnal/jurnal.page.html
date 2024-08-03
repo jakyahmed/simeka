@@ -1,0 +1,62 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tabs/prakerin/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Jurnal</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">jurnal</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+
+
+  <ion-card *ngIf="pinnedSiswa.length > 0">
+    <ion-card-header>
+      <ion-card-title>Pinned Siswa</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-item *ngFor="let siswa of pinnedSiswa">
+        <ion-badge color="tertiary" mode="md">{{siswa.kelas}}</ion-badge>
+        <ion-label class="ion-text-wrap">{{siswa.name}}</ion-label>
+        <ion-button (click)="openJurnal(siswa.id, siswa.name)" color="success">
+          <ion-icon slot="start" name="book"></ion-icon>
+          Jurnal
+        </ion-button>
+        <ion-button (click)="unpin(siswa)">
+          <ion-icon slot="start" name="eye-off-outline"></ion-icon>Unpin
+        </ion-button>
+      </ion-item>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Cari Nama Siswa</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-searchbar placeholder="Nama Siswa" [(ngModel)]="query" (ngModelChange)="filterData()"></ion-searchbar>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card>
+    <ion-card-content>
+      <ion-item *ngFor="let siswa of filteredSiswa">
+        <ion-badge color="tertiary" mode="md">{{siswa.kelas}}</ion-badge>
+        <ion-label class="ion-text-wrap">{{siswa.name}}</ion-label>
+        <ion-button (click)="openJurnal(siswa.id, siswa.name)" color="success">
+          <ion-icon slot="start" name="book"></ion-icon>
+          Jurnal
+        </ion-button>
+        <ion-button (click)="pin(siswa)">
+          <ion-icon slot="start" name="eye-outline"></ion-icon>Pin
+        </ion-button>
+      </ion-item>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

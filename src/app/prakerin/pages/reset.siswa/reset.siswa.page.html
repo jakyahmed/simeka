@@ -1,0 +1,40 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tabs/prakerin/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Reset Login PKL</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Reset Login PKL</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-card>
+    <ion-card-header>
+      <!-- <ion-card-subtitle>Awesome Subtitle</ion-card-subtitle> -->
+      <ion-card-title>Cari Nama Siswa</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-searchbar placeholder="Nama Siswa" [(ngModel)]="query" (ngModelChange)="filterData()"></ion-searchbar>
+    </ion-card-content>
+  </ion-card>
+  <ion-card>
+    <ion-card-content>
+      <ion-item *ngFor="let siswa of filteredSiswa">
+        <ion-badge color="tertiary" mode="md">{{siswa.kelas}}</ion-badge>
+        <ion-label class="ion-text-wrap">{{siswa.name}}</ion-label>
+        <ion-button (click)="resetLogin(siswa.id)" color="danger">
+          <ion-icon slot="start" name="key"></ion-icon>
+          Rst
+        </ion-button>
+      </ion-item>
+    </ion-card-content>
+  </ion-card>
+  <ion-toast [isOpen]="isToastOpen" message="{{toast.pesan}}" [duration]="3000"
+    (didDismiss)="setOpen(false)"></ion-toast>
+</ion-content>

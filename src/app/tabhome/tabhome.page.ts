@@ -60,4 +60,8 @@ export class TabhomePage implements OnInit {
     this.isLogin=false;
     this.nav.navigateRoot('/login');
   }
+
+  gotoPrakerin(){
+    this.nav.navigateRoot('/tabs/prakerin');
+  }
 }

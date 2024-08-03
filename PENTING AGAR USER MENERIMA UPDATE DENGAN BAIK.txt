@@ -1,0 +1,8 @@
+perubahan nama file (cache busting)
+aktifkan outputHashing: "all" pada angular.json
+
+"build":{
+	"options":{
+		"outputHashing": "all",
+	}
+}

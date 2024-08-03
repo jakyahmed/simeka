@@ -45,10 +45,10 @@
       <ion-label>Semester</ion-label>
       <ion-buttons slot="end">
         <ion-button (click)="ganjil()" fill="solid" color="primary">
-          Ganjil
+          Ganjil (7-12)
         </ion-button>
         <ion-button (click)="genap()" fill="solid" color="secondary">
-          Genap
+          Genap (1-6)
         </ion-button>
       </ion-buttons>
     </ion-item>
@@ -91,26 +91,32 @@
 
   <!-- byname -->
 <div *ngIf="(dataRekap?.data?.length > 0) && (dataByname?.data?.length > 0)" class="table-container">
-<table>
-  <tr>
-    <th style="width: 8%;">No</th>
-    <th style="width: 52%;">Nama</th>
-    <th style="width: 8%;">S</th>
-    <th style="width: 8%;">I</th>
-    <th style="width: 8%;">A</th>
-    <th style="width: 8%;">B</th>
-    <th style="width: 8%;">T</th>
-  </tr>
-  <tr *ngFor="let item of dataByname.data; let i=index">
-    <td>{{i+1}}</td>
-    <td>{{item.nama}}</td>
-    <td>{{item.sakit}}</td>
-    <td>{{item.ijin}}</td>
-    <td>{{item.alpha}}</td>
-    <td>{{item.bolos}}</td>
-    <td>{{item.terlambat}}</td>
-  </tr>
-</table>
+  <ion-button (click)="exportToExcel()" expand="block" fill="outline">
+    <ion-icon slot="start" name="save-outline"></ion-icon> Excel
+  </ion-button>
+
+<div id="table-data">
+  <table>
+    <tr>
+      <th style="width: 8%;">No</th>
+      <th style="width: 52%;">Nama</th>
+      <th style="width: 8%;">S</th>
+      <th style="width: 8%;">I</th>
+      <th style="width: 8%;">A</th>
+      <th style="width: 8%;">B</th>
+      <th style="width: 8%;">T</th>
+    </tr>
+    <tr *ngFor="let item of dataByname.data; let i=index">
+      <td>{{i+1}}</td>
+      <td>{{item.nama}}</td>
+      <td>{{item.sakit}}</td>
+      <td>{{item.ijin}}</td>
+      <td>{{item.alpha}}</td>
+      <td>{{item.bolos}}</td>
+      <td>{{item.terlambat}}</td>
+    </tr>
+  </table>
+</div>
 </div>
 
 <!-- toast -->
