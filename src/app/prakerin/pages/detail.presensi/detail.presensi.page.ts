@@ -114,7 +114,7 @@ export class DetailPresensiPage implements OnInit {
       // console.log("isHoliday:" + isHoliday);
 
       let status = '-';
-      const foundItem = this.datapresensi.find((item: { date: string | number | Date; }) => this.formatLocalDate(new Date(item.date)) === localDate);
+      const foundItem = this.datapresensi?.find((item: { date: string | number | Date; }) => this.formatLocalDate(new Date(item.date)) === localDate);
 
       if (isSunday || isHoliday) {
         status = 'Libur';

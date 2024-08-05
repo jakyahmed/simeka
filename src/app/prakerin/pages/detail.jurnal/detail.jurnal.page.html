@@ -13,4 +13,34 @@
       <ion-title size="large">Jurnal PKL</ion-title>
     </ion-toolbar>
   </ion-header>
+  <ion-item>
+    <ion-select [(ngModel)]="bulan" placeholder="Pilih" label="Bulan" (ionChange)="getJurnal()">
+      <ion-select-option *ngFor="let bln of bulans" [value]="bln.id">{{bln.name}}</ion-select-option>
+    </ion-select>
+  </ion-item>
+  <ion-button type="button" (click)="exportToExcel()" fill="outline">
+    <ion-icon slot="start" name="save-outline"></ion-icon>Excel</ion-button>
+  <div id="table-data">
+    <table border="1" style="width: 100%;">
+      <thead>
+        <tr>
+          <th colspan="4">{{nama}}</th>
+        </tr>
+        <tr>
+          <th>No</th>
+          <th>Tanggal</th>
+          <th>Kegiatan</th>
+          <th>Hasil Kegiatan</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of displayJurnal;let i=index">
+          <td>{{i+1}}</td>
+          <td>{{item.formattedDate}}</td>
+          <td>{{item.kegiatan}}</td>
+          <td>{{item.hasil_kegiatan}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </ion-content>

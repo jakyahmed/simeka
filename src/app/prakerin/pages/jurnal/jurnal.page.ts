@@ -27,6 +27,7 @@ export class JurnalPage implements OnInit {
   }
   ionViewDidEnter() {
     this.searchData();
+    this.loadPinnedSiswa();
   }
 
   searchData() {

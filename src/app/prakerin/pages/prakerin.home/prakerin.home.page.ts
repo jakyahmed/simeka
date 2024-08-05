@@ -15,39 +15,37 @@ import { lastValueFrom, tap } from 'rxjs';
 })
 export class PrakerinHomePage implements OnInit {
 
-  constructor(private nav:NavController,
-    private auth:AuthService,
-    private router:Router
+  constructor(private nav: NavController,
+    private auth: AuthService,
+    private router: Router
   ) { }
 
   ngOnInit() {
   }
 
-  async cekLogin() {
-    const isLogin = await lastValueFrom(
-      this.auth.isLoggedIn().pipe(
-        tap((isLogin) => {
-          if (!isLogin) {
-            this.router.navigate(['/login'], {
-              queryParams: { redir: '/main/tabs/prakerin' },
-              replaceUrl: true,
-              skipLocationChange: true,
-            });
-            console.log('login: ' + isLogin);
-          }
-        })
-      )
+  cekLogin() {
+    this.auth.isLoggedIn().pipe(
+      tap((isLogin) => {
+        if (!isLogin) {
+          this.router.navigate(['/login'], {
+            queryParams: { redir: '/main/tabs/prakerin' },
+            replaceUrl: true,
+            skipLocationChange: true,
+          });
+          console.log('login: ' + isLogin);
+        }
+      })
     );
   }
-  
-  async ionViewWillEnter(){
-  await this.cekLogin();
-}
-  gotoJurnalGuru(){
+
+  ionViewWillEnter() {
+    this.cekLogin();
+  }
+  gotoJurnalGuru() {
     this.nav.navigateForward("/tabs/prakerin/jurnalguru");
   }
 
-  gotoJurnal(){
+  gotoJurnal() {
     this.nav.navigateForward("/tabs/prakerin/jurnal");
   }
 
