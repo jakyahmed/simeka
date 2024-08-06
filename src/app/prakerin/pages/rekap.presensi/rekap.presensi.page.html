@@ -42,15 +42,16 @@
         <ion-button type="button" (click)="exportToPDF()" fill="outline">
           <ion-icon slot="start" name="reader-outline"></ion-icon> PDF</ion-button>
       </ion-buttons>
-      <ion-text color="primary">
-        <i>**klik pada nama siswa untuk melihat detail</i>
-      </ion-text>
       <div id="table-data">
         <h2>Rekapitulasi Presensi Online</h2>
         <h2>Praktik Kerja Lapangan (PKL)</h2>
         <h2>SMK Negeri 1 Kalibawang</h2>
+
         <!-- fix below line -->
-        <h3 id="nama-kelas">Kelas: {{(filteredSiswa.length>0)?filteredSiswa[0]?.kelas:""}}</h3> 
+        <h3 id="nama-kelas">Kelas: {{(filteredSiswa.length>0)?filteredSiswa[0]?.kelas:""}}</h3>
+        <ion-text color="primary">
+          <i>**klik pada nama siswa untuk melihat detail</i>
+        </ion-text>
         <table border="1" id="main-table">
           <thead>
             <tr>

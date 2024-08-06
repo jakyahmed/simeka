@@ -24,18 +24,16 @@ export class PrakerinHomePage implements OnInit {
   }
 
   cekLogin() {
-    this.auth.isLoggedIn().pipe(
-      tap((isLogin) => {
-        if (!isLogin) {
-          this.router.navigate(['/login'], {
-            queryParams: { redir: '/main/tabs/prakerin' },
-            replaceUrl: true,
-            skipLocationChange: true,
-          });
-          console.log('login: ' + isLogin);
-        }
-      })
-    );
+    this.auth.isLoggedIn().subscribe((isLogin)=>{
+      if (!isLogin) {
+        this.router.navigate(['/login'], {
+          queryParams: { redir: '/main/tabs/prakerin' },
+          replaceUrl: true,
+          skipLocationChange: true,
+        });
+        console.log('login: ' + isLogin);
+      }
+    });
   }
 
   ionViewWillEnter() {

@@ -1,8 +1,8 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-      <ion-buttons slot="start">
-        <ion-back-button defaultHref="/tabs/prakerin/home"></ion-back-button>
-      </ion-buttons>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tabs/prakerin/home"></ion-back-button>
+    </ion-buttons>
     <ion-title>Jurnal Guru</ion-title>
   </ion-toolbar>
 </ion-header>
@@ -10,8 +10,75 @@
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">jurnal.guru</ion-title>
+      <ion-title size="large">Jurnal Guru</ion-title>
     </ion-toolbar>
   </ion-header>
-  <h1>Mohon bersabar programmernya sibuk 😘😘😘</h1>
+  <ion-card>
+    <ion-card-header>
+      <!-- <ion-card-subtitle>Awesome Subtitle</ion-card-subtitle> -->
+      <ion-card-title>Isi Jurnal</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-item>
+        <ion-label>Tanggal</ion-label>
+        <ion-datetime-button datetime="datetime"></ion-datetime-button>
+        <ion-modal [keepContentsMounted]="true">
+          <ng-template>
+            <ion-datetime id="datetime" presentation="date-time" locale="id-ID" showDefaultButtons="true"
+              (ionChange)="setWaktu($event)"></ion-datetime>
+          </ng-template>
+        </ion-modal>
+      </ion-item>
+      <ion-item>
+        <ion-input type="text" placeholder="Uraian" [(ngModel)]="uraian"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-input type="text" placeholder="Siswa yang dibimbing" [(ngModel)]="siswa"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-button (click)="sendJurnal()" fill="outline">
+          <ion-icon slot="start" name="send"></ion-icon>
+          Simpan / Update
+        </ion-button>
+      </ion-item>
+    </ion-card-content>
+  </ion-card>
+  <ion-card>
+    <ion-card-header>
+      <!-- <ion-card-subtitle>Awesome Subtitle</ion-card-subtitle> -->
+      <ion-card-title>Data Jurnal</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-item>
+        <ion-select placeholder="Pilih" [(ngModel)]="bulan" (ionChange)="getJurnal()" label="Bulan">
+          <ion-select-option *ngFor="let bln of bulans" [value]="bln.id">{{bln.name}}</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-button type="button" (click)="exportToExcel()" fill="outline">
+        <ion-icon slot="start" name="save-outline"></ion-icon>Excel</ion-button>
+      <div id="table-data">
+        <table border="1" style="width: 100%;">
+          <thead>
+            <tr>
+              <th colspan="4">Jurnal Bulan {{bulans[bulan-1].name}} <br> Guru: {{userData.full_name}}</th>
+            </tr>
+            <tr>
+              <th>No</th>
+              <th>Tanggal/Waktu</th>
+              <th>Uraian</th>
+              <th>PD dibimbing</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of dataJurnal;let i=index">
+              <td>{{i+1}}</td>
+              <td>{{item.date |date:'short'}}</td>
+              <td>{{item.uraian}}</td>
+              <td>{{item.siswa}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </ion-card-content>
+  </ion-card>
 </ion-content>
