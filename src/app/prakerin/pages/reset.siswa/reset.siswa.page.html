@@ -30,7 +30,11 @@
         <ion-label class="ion-text-wrap">{{siswa.name}}</ion-label>
         <ion-button (click)="resetLogin(siswa.id)" color="danger">
           <ion-icon slot="start" name="key"></ion-icon>
-          Rst
+          Reset
+        </ion-button>
+        <ion-button (click)="resetCode(siswa.id)">
+          <ion-icon slot="start" name="keypad"></ion-icon>
+          Kode
         </ion-button>
       </ion-item>
     </ion-card-content>

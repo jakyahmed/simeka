@@ -67,6 +67,47 @@ export class ResetSiswaPage implements OnInit {
 
   }
 
+  async resetCode(siswaid: any) {
+    const alertctrl = await this.alertController.create({
+      header: 'Konfirmasi',
+      message: 'Berikan 5-digit code untuk siswa sebagai kode login.',
+      inputs: [{name:"kode",placeholder:"kode",type:"number"}],
+      buttons: [
+        {
+          text: 'Batal',
+          role: 'cancel',
+        },
+        {
+          text: 'Ya',
+          handler: async (data) => {
+            // Tambahkan logika reset login di sini
+            let kode:number=data.kode;
+            console.log(data);
+            
+            if(kode.toString().length>=5){
+              this.http.post(`${this.host}admin-api/resetsiswa.php`, { siswaid: siswaid, kode: kode }, { headers: { "Content-Type": "application/json" } })
+                .subscribe({
+                  next: (value) => {
+                    this.toast = value
+                    this.setOpen(true);
+                  }
+                });
+              console.log('Login reset for siswa id:', siswaid);
+            }else{
+              this.toast.pesan="Kode kurang dari 5 digit."
+              this.setOpen(true);
+            }
+            // Misalnya, Anda bisa menambahkan panggilan API untuk reset login di sini
+          }
+        }
+      ]
+    });
+
+    await alertctrl.present();
+    console.log(siswaid);
+
+  }
+
   searchData() {
     this.http.post(`${this.host}admin-api/resetsiswa.php`, null, { headers: { "Content-Type": "application/json" } })
       .subscribe({
